@@ -1,5 +1,6 @@
 package com.example.todo.ui.creation.create
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +14,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.todo.data.models.TaskFormState
+import com.example.todo.data.create.TaskFormState
 import com.example.todo.data.models.TaskPriority
 import com.example.todo.data.models.TaskShift
 import com.example.todo.ui.components.TaskActionButtonComponent
-import com.example.todo.ui.components.TaskInputTextComponent
+import com.example.todo.ui.components.inputs.TaskInputTextComponent
 import com.example.todo.ui.components.selector.TaskSelectorComponent
 import com.example.todo.ui.components.selector.TaskSelectorOption
 import com.example.todo.ui.theme.*
@@ -47,6 +47,7 @@ class CreateTaskFragment : Fragment() {
 
     private fun onCreateClicked() {
         viewModel.save()
+        activity?.setResult(Activity.RESULT_OK)
         activity?.finish()
     }
 }
@@ -96,7 +97,6 @@ fun CreateTaskScreen(
 
                 TaskInputTextComponent(
                     label = "First let's give your task a title",
-                    value = "",
                     onValueChange = { onTitleChanged(it) },
                     textState = formState.title
                 )

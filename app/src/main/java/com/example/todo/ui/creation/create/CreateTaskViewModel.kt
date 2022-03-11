@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todo.data.create.CreateRepository
 import com.example.todo.data.models.Task
-import com.example.todo.data.models.TaskFormState
+import com.example.todo.data.create.TaskFormState
 import com.example.todo.data.models.TaskPriority
 import com.example.todo.data.models.TaskShift
 import com.example.todo.ui.components.selector.TaskSelectorOption

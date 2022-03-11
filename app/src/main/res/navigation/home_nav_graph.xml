@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.todo.ui.home.HomeFragment"
+        android:name="com.example.todo.ui.home.feed.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home"/>
 

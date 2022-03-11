@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/matheus.cesar_souths/AndroidStudioProjects/Todo/app/src/main/res/layout/activity_create_task.xml" value="0.1322463768115942" />
+        <entry key="..\:/Users/matheus.cesar_souths/AndroidStudioProjects/Todo/app/src/main/res/layout/activity_home.xml" value="0.16145307769929365" />
+        <entry key="..\:/Users/matheus.cesar_souths/AndroidStudioProjects/Todo/app/src/main/res/layout/activity_login.xml" value="0.16145307769929365" />
         <entry key="..\:/Users/matheus.cesar_souths/AndroidStudioProjects/Todo/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/matheus.cesar_souths/AndroidStudioProjects/Todo/app/src/main/res/layout/ds_loader.xml" value="0.20018115942028986" />
         <entry key="..\:/Users/matheus.cesar_souths/AndroidStudioProjects/Todo/app/src/main/res/layout/fragment_create_task_bottom_sheet.xml" value="0.18" />

@@ -3,6 +3,7 @@ package com.example.todo
 import android.app.Application
 import com.example.todo.di.createModule
 import com.example.todo.di.homeModule
+import com.example.todo.di.onBoardingModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -18,7 +19,8 @@ class TodoApplication : Application() {
             androidContext(this@TodoApplication)
             modules(
                 homeModule,
-                createModule
+                createModule,
+                onBoardingModule
             )
         }
     }

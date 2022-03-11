@@ -1,7 +1,9 @@
-package com.example.todo.data.models
+package com.example.todo.data.create
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import com.example.todo.data.models.TaskPriority
+import com.example.todo.data.models.TaskShift
 import java.util.*
 
 class TaskFormState(
