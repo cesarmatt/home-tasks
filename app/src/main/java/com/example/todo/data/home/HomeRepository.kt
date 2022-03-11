@@ -1,7 +1,6 @@
-package com.example.todo.data
+package com.example.todo.data.home
 
 import com.example.todo.data.models.Task
-import com.example.todo.di.DaggerTodoComponent
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -12,18 +11,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow
 import java.util.*
-import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeRepository {
 
     val db = Firebase.firestore
-    val taskCreationStatus = MutableStateFlow(false)
     val taskDeletionStatus = MutableStateFlow(false)
-
-    init {
-        DaggerTodoComponent.create().inject(this)
-    }
 
     suspend fun getTasks(): Flow<List<Task>> = callbackFlow {
         val eventDocument = FirebaseFirestore
@@ -38,18 +31,6 @@ class HomeRepository {
         }
 
         awaitClose { subscription.remove() }
-    }
-
-    fun postTask(task: Task) {
-        db.collection("tasks")
-            .add(task)
-            .addOnSuccessListener {
-                taskCreationStatus.tryEmit(true)
-
-            }
-            .addOnFailureListener {
-                taskCreationStatus.tryEmit(false)
-            }
     }
 
     fun completeTask(task: Task) {

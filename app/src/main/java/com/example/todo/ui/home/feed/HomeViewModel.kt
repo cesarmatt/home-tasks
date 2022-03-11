@@ -1,26 +1,18 @@
-package com.example.todo.ui
+package com.example.todo.ui.home
 
 import androidx.lifecycle.*
-import com.example.todo.data.HomeRepository
+import com.example.todo.data.home.HomeRepository
 import com.example.todo.data.models.*
-import com.example.todo.di.DaggerTodoComponent
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.*
-import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
-
-    @Inject
-    lateinit var repository: HomeRepository
+class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
 
     val db = Firebase.firestore
-
-    private val _formState = TaskFormState()
 
     private val _uiState = MutableLiveData<HomeUiState>()
     val uiState: LiveData<HomeUiState> = _uiState
@@ -33,7 +25,6 @@ class HomeViewModel : ViewModel() {
         _completeTransactionUiState
 
     init {
-        DaggerTodoComponent.create().inject(this)
         getTaskList()
     }
 
@@ -50,21 +41,6 @@ class HomeViewModel : ViewModel() {
                 }
                 .addOnFailureListener {
                     _uiState.value = HomeUiState.Error(IOException())
-                }
-        }
-    }
-
-    fun save() {
-        viewModelScope.launch {
-            val task = makeTask()
-            db.collection("tasks")
-                .add(task)
-                .addOnSuccessListener {
-                    refresh()
-                }
-                .addOnFailureListener {
-                    _createTransactionUiState.value =
-                        CreateTransactionUiState.Error(IOException("Could not create your task"))
                 }
         }
     }
@@ -87,41 +63,6 @@ class HomeViewModel : ViewModel() {
                         CompleteTransactionUiState.Error(IOException("Could not complete your task"))
                 }
         }
-    }
-
-    fun setTaskTitle(taskTitle: String) {
-        _formState.title = taskTitle
-    }
-
-    fun setSelectedPriority(priorityPosition: Int) {
-        val selectedOption = TaskPriority.values()[priorityPosition]
-        _formState.priority = selectedOption
-    }
-
-    fun setSelectedShift(shiftPosition: Int) {
-        val selectedOption = TaskShift.values()[shiftPosition]
-        _formState.shift = selectedOption
-    }
-
-    private fun makeTask(): Task {
-        return Task(
-            id = generateId(),
-            title = _formState.title,
-            priority = _formState.priority,
-            startDate = Timestamp.now(),
-            deadline = makeTaskDeadline(),
-            shift = _formState.shift
-        )
-    }
-
-    private fun makeTaskDeadline(): Timestamp {
-        val calendar = Calendar.getInstance()
-        calendar.add(Calendar.DAY_OF_MONTH, _formState.priority.maximumTime)
-        return Timestamp(calendar.time)
-    }
-
-    private fun generateId(): String {
-        return UUID.randomUUID().toString()
     }
 
     fun refresh() {

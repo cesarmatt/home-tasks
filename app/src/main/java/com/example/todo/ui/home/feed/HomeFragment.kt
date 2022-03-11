@@ -1,11 +1,13 @@
-package com.example.todo.ui.home
+package com.example.todo.ui.home.feed
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,31 +16,32 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Create
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
-import com.example.todo.ui.HomeUiState
-import com.example.todo.ui.HomeViewModel
+import com.example.todo.ui.components.TaskLoaderComponent
 import com.example.todo.ui.creation.CreateTaskActivity
+import com.example.todo.ui.home.HomeUiState
+import com.example.todo.ui.home.HomeViewModel
 import com.example.todo.ui.home.components.topbar.HomeTopBarComponent
 import com.example.todo.ui.home.components.topbar.TaskItemComponent
 import com.example.todo.ui.theme.TasksTheme
 import com.example.todo.ui.theme.dimen2
 import com.example.todo.ui.theme.dimen4
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
 
-    lateinit var viewModel: HomeViewModel
+    private val viewModel: HomeViewModel by viewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
-    }
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                viewModel.refresh()
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +61,7 @@ class HomeFragment : Fragment() {
 
     private fun onFloatingActionButtonClicked() {
         val intent = Intent(requireContext(), CreateTaskActivity::class.java)
-        startActivity(intent)
+        startForResult.launch(intent)
     }
 
 //    private fun setupBindings() {
@@ -123,7 +126,7 @@ fun HomeScreen(
             }
         }
     ) {
-        when(uiState) {
+        when (uiState) {
             is HomeUiState.Success -> {
                 LazyColumn(
                     contentPadding = PaddingValues(horizontal = dimen4, vertical = dimen2),
@@ -132,6 +135,9 @@ fun HomeScreen(
                         TaskItemComponent(task = it)
                     }
                 }
+            }
+            is HomeUiState.Loading -> {
+                TaskLoaderComponent()
             }
         }
     }

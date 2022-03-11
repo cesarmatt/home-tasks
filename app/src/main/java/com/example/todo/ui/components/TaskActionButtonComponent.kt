@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import com.example.todo.ui.theme.buttonSize
 
 @Composable
-fun ActionButtonComponent(
+fun TaskActionButtonComponent(
     title: String,
     onClick: () -> Unit
 ) {

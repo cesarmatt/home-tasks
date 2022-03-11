@@ -12,7 +12,7 @@ class CreateTaskActivity : AppCompatActivity() {
         setContentView(R.layout.activity_create_task)
 
         val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.create_task_navhost_fragment) as NavHostFragment
+            supportFragmentManager.findFragmentById(R.id.create_task_nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
         navController.setGraph(R.navigation.create_nav_graph)
