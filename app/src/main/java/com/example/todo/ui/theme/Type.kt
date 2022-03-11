@@ -7,7 +7,6 @@ import androidx.compose.ui.unit.sp
 
 val typography = Typography(
     h6 = TextStyle(
-        color = Color.Black,
         fontSize = textSize6
     ),
     caption = TextStyle(
