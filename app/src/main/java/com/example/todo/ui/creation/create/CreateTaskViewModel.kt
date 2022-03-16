@@ -9,6 +9,10 @@ import com.example.todo.data.models.TaskPriority
 import com.example.todo.data.models.TaskShift
 import com.example.todo.ui.components.selector.TaskSelectorOption
 import com.google.firebase.Timestamp
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -20,7 +24,6 @@ class CreateTaskViewModel(private val repository: CreateRepository) : ViewModel(
     fun save() {
         viewModelScope.launch {
             val task = makeTask()
-            println(task)
             repository.postTask(task)
         }
     }

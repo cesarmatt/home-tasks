@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -14,6 +15,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todo.data.create.TaskFormState
 import com.example.todo.data.models.TaskPriority
 import com.example.todo.data.models.TaskShift
@@ -21,52 +26,24 @@ import com.example.todo.ui.components.TaskActionButtonComponent
 import com.example.todo.ui.components.inputs.TaskInputTextComponent
 import com.example.todo.ui.components.selector.TaskSelectorComponent
 import com.example.todo.ui.components.selector.TaskSelectorOption
+import com.example.todo.ui.creation.components.CreateTaskTopAppBarComponent
 import com.example.todo.ui.theme.*
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CreateTaskFragment : Fragment() {
-
-    private val viewModel: CreateTaskViewModel by viewModel()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                TasksTheme {
-                    CreateTaskHoisting(
-                        createTaskViewModel = viewModel,
-                        onCreateClicked = { onCreateClicked() }
-                    )
-                }
-            }
-        }
-    }
-
-    private fun onCreateClicked() {
-        viewModel.save()
-        activity?.setResult(Activity.RESULT_OK)
-        activity?.finish()
-    }
-}
-
 @Composable
-fun CreateTaskHoisting(
-    createTaskViewModel: CreateTaskViewModel,
-    onCreateClicked: () -> Unit
-) {
-    val formState = remember { createTaskViewModel.formState }
-    CreateTaskScreen(
-        formState = formState,
-        onTitleChanged = { createTaskViewModel.onTitleChanged(it) },
-        onPrioritySelected = { createTaskViewModel.onPrioritySelected(it) },
-        onShiftSelected = { createTaskViewModel.onShiftSelected(it) },
-        prioritySelectorOptions = createTaskViewModel.getPrioritySelectorOptions(),
-        shiftSelectorOptions = createTaskViewModel.getShiftSelectorOptions(),
-        onCreateClicked = { onCreateClicked() }
-    )
+fun CreateTaskHoisting() {
+//    createTaskViewModel: CreateTaskViewModel = viewModel(CreateTaskViewModel::class.java)
+    Text("Create")
+//    val formState = remember { createTaskViewModel.formState }
+//    CreateTaskScreen(
+//        formState = formState,
+//        onTitleChanged = { createTaskViewModel.onTitleChanged(it) },
+//        onPrioritySelected = { createTaskViewModel.onPrioritySelected(it) },
+//        onShiftSelected = { createTaskViewModel.onShiftSelected(it) },
+//        prioritySelectorOptions = createTaskViewModel.getPrioritySelectorOptions(),
+//        shiftSelectorOptions = createTaskViewModel.getShiftSelectorOptions(),
+//    )
 }
 
 @Composable
@@ -76,23 +53,18 @@ fun CreateTaskScreen(
     onPrioritySelected: (TaskPriority) -> Unit,
     onShiftSelected: (TaskShift) -> Unit,
     prioritySelectorOptions: List<TaskSelectorOption<TaskPriority>>,
-    shiftSelectorOptions: List<TaskSelectorOption<TaskShift>>,
-    onCreateClicked: () -> Unit
+    shiftSelectorOptions: List<TaskSelectorOption<TaskShift>>
 ) {
     Scaffold(
         modifier = Modifier
             .fillMaxHeight()
             .fillMaxWidth(),
+        topBar = { CreateTaskTopAppBarComponent() }
     ) {
         Column(modifier = Modifier.padding(dimen4)) {
             Column(
                 modifier = Modifier.weight(1f),
             ) {
-                Text(
-                    text = "Let's create a new task!",
-                    style = MaterialTheme.typography.h6
-                )
-
                 Spacer(modifier = Modifier.height(dimen6))
 
                 TaskInputTextComponent(
@@ -120,7 +92,7 @@ fun CreateTaskScreen(
             }
 
             TaskActionButtonComponent(title = "Create your task!") {
-                onCreateClicked()
+                println("clicked")
             }
         }
 

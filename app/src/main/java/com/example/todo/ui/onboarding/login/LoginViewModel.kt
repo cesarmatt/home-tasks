@@ -25,6 +25,7 @@ class LoginViewModel : ViewModel() {
             _formState.email.value.trim(),
             _formState.password.value.trim()
         )
+        _uiState.value = LoginUiState.Loading
         auth.signInWithEmailAndPassword(loginCredentials.email, loginCredentials.password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -49,4 +50,6 @@ class LoginViewModel : ViewModel() {
 sealed class LoginUiState {
     object Success : LoginUiState()
     object Error : LoginUiState()
+    object Idle : LoginUiState()
+    object Loading : LoginUiState()
 }

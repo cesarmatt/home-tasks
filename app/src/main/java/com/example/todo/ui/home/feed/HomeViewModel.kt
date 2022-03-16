@@ -1,28 +1,22 @@
-package com.example.todo.ui.home
+package com.example.todo.ui.home.feed
 
 import androidx.lifecycle.*
-import com.example.todo.data.home.HomeRepository
 import com.example.todo.data.models.*
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.IOException
-import java.util.*
+import javax.inject.Inject
 
-class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor() : ViewModel() {
 
     val db = Firebase.firestore
 
     private val _uiState = MutableLiveData<HomeUiState>()
     val uiState: LiveData<HomeUiState> = _uiState
-
-    private val _createTransactionUiState = MutableLiveData<CreateTransactionUiState>()
-    val createTransactionUiState: LiveData<CreateTransactionUiState> = _createTransactionUiState
-
-    private val _completeTransactionUiState = MutableLiveData<CompleteTransactionUiState>()
-    val completeTransactionUiState: LiveData<CompleteTransactionUiState> =
-        _completeTransactionUiState
 
     init {
         getTaskList()
@@ -45,26 +39,6 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
         }
     }
 
-    fun complete(task: Task) {
-        viewModelScope.launch {
-            db.collection("tasks")
-                .document(task.id)
-                .update(
-                    mapOf(
-                        "isCompleted" to true,
-                        "endDate" to Date()
-                    )
-                )
-                .addOnSuccessListener {
-                    refresh()
-                }
-                .addOnFailureListener {
-                    _completeTransactionUiState.value =
-                        CompleteTransactionUiState.Error(IOException("Could not complete your task"))
-                }
-        }
-    }
-
     fun refresh() {
         getTaskList()
     }
@@ -75,16 +49,4 @@ sealed class HomeUiState {
     class Error(var exception: Throwable) : HomeUiState()
     object Empty : HomeUiState()
     object Loading : HomeUiState()
-}
-
-sealed class CreateTransactionUiState {
-    object Success : CreateTransactionUiState()
-    class Error(var exception: Throwable) : CreateTransactionUiState()
-    object Loading : CreateTransactionUiState()
-}
-
-sealed class CompleteTransactionUiState {
-    object Success : CompleteTransactionUiState()
-    class Error(var exception: Throwable) : CompleteTransactionUiState()
-    object Loading : CompleteTransactionUiState()
 }

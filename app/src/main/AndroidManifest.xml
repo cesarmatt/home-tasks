@@ -21,12 +21,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.home.HomeActivity"
-            android:exported="true" />
-
-        <activity
-            android:name=".ui.creation.CreateTaskActivity"
-            android:exported="true" />
+        <activity android:name=".HomeActivity" android:exported="true" />
 
     </application>
 

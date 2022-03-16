@@ -13,11 +13,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import com.example.todo.HomeActivity
 import com.example.todo.data.login.LoginFormState
 import com.example.todo.ui.components.TaskActionButtonComponent
 import com.example.todo.ui.components.inputs.TaskInputTextComponent
 import com.example.todo.ui.components.inputs.TaskPasswordInputTextComponent
-import com.example.todo.ui.home.HomeActivity
 import com.example.todo.ui.theme.TasksTheme
 import com.example.todo.ui.theme.dimen4
 import com.example.todo.ui.theme.dimen6
