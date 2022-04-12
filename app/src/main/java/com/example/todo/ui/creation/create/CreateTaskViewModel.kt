@@ -1,5 +1,7 @@
 package com.example.todo.ui.creation.create
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todo.data.create.CreateRepository
@@ -9,22 +11,33 @@ import com.example.todo.data.models.TaskPriority
 import com.example.todo.data.models.TaskShift
 import com.example.todo.ui.components.selector.TaskSelectorOption
 import com.google.firebase.Timestamp
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.flow
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
-class CreateTaskViewModel(private val repository: CreateRepository) : ViewModel() {
+@HiltViewModel
+class CreateTaskViewModel @Inject constructor(private val repository: CreateRepository) : ViewModel() {
 
     private val _formState = TaskFormState()
     val formState: TaskFormState = _formState
 
+    private val _uiState = MutableLiveData<CreateTaskUiState>()
+    val uiState: LiveData<CreateTaskUiState> = _uiState
+
     fun save() {
         viewModelScope.launch {
+            _uiState.value = CreateTaskUiState.Loading
             val task = makeTask()
             repository.postTask(task)
+            repository.taskCreationResponse.collect { hasCreated ->
+                if (hasCreated) {
+                    _uiState.value = CreateTaskUiState.Success
+                } else {
+                    _uiState.value = CreateTaskUiState.Error
+                }
+            }
         }
     }
 
@@ -75,4 +88,11 @@ class CreateTaskViewModel(private val repository: CreateRepository) : ViewModel(
             TaskSelectorOption(shift.display, shift)
         }
     }
+}
+
+sealed class CreateTaskUiState {
+    object Loading : CreateTaskUiState()
+    object Success : CreateTaskUiState()
+    object Error : CreateTaskUiState()
+    object Idle : CreateTaskUiState()
 }

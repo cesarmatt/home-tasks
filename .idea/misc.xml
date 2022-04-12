@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/matheus.cesar_souths/AndroidStudioProjects/Todo/app/src/main/java/com/example/todo/ui/creation/components/CreateTaskTopBarComponent.kt" value="0.9277777777777778" />
         <entry key="..\:/Users/matheus.cesar_souths/AndroidStudioProjects/Todo/app/src/main/res/layout/activity_create_task.xml" value="0.1322463768115942" />
         <entry key="..\:/Users/matheus.cesar_souths/AndroidStudioProjects/Todo/app/src/main/res/layout/activity_home.xml" value="0.16145307769929365" />
         <entry key="..\:/Users/matheus.cesar_souths/AndroidStudioProjects/Todo/app/src/main/res/layout/activity_login.xml" value="0.16145307769929365" />

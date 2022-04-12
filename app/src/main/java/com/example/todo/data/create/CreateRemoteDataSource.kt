@@ -4,8 +4,9 @@ import com.example.todo.data.models.Task
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
+import javax.inject.Inject
 
-class CreateRemoteDataSource {
+class CreateRemoteDataSource @Inject constructor() {
 
     val db = Firebase.firestore
 
@@ -17,7 +18,6 @@ class CreateRemoteDataSource {
             .add(task)
             .addOnSuccessListener {
                 taskCreationResponse.tryEmit(true)
-
             }
             .addOnFailureListener {
                 taskCreationResponse.tryEmit(false)

@@ -32,6 +32,6 @@ fun MainScreenView() {
             BottomNavigationComponent(navController)
         }
     ) {
-        NavigationGraph(nacController = navController)
+        NavigationGraph(navHostController = navController)
     }
 }

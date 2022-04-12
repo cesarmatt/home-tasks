@@ -11,20 +11,22 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.todo.ui.creation.create.CreateTaskHoisting
+import com.example.todo.ui.creation.create.CreateTaskViewModel
 import com.example.todo.ui.home.feed.HomeViewModel
 import com.example.todo.ui.home.feed.HomeScreenHoisting
 import com.example.todo.ui.store.StoreHoisting
 
 @Composable
-fun NavigationGraph(nacController: NavHostController) {
-    NavHost(navController = nacController, startDestination = BottomNavItem.Home.screenRoute) {
+fun NavigationGraph(navHostController: NavHostController) {
+    NavHost(navController = navHostController, startDestination = BottomNavItem.Home.screenRoute) {
         composable(BottomNavItem.Home.screenRoute) {
             val homeViewModel = hiltViewModel<HomeViewModel>()
             HomeScreenHoisting(homeViewModel)
         }
 
         composable(BottomNavItem.Create.screenRoute) {
-            CreateTaskHoisting()
+            val createTaskViewModel = hiltViewModel<CreateTaskViewModel>()
+            CreateTaskHoisting(createTaskViewModel)
         }
 
         composable(BottomNavItem.Store.screenRoute) {
